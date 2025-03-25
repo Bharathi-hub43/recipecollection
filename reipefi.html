@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title> Recipe Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-image: url('C:\Users\Bharathi\Downloads\miniproject\recipe collection.jpg');
+            background-color: #f5f5f5;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: #333;
+        }
+
+        .overlay {
+            background-color: rgba(255, 255, 255, 0.9);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Navigation styles */
+        nav {
+            background-color: #d35400;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .menu-icon {
+            display: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Header styles */
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            margin: 20px auto 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+        }
+
+        h1 {
+            color: #d35400;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .recipe-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .recipe-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .recipe-image {
+            height: 200px;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            object-fit: cover;
+        }
+
+        .recipe-content {
+            padding: 20px;
+        }
+
+        .recipe-title {
+            color: #d35400;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .recipe-description {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .recipe-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #95a5a6;
+            font-size: 0.8rem;
+        }
+
+        .recipe-category {
+            background-color: #e67e22;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #d35400;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #e67e22;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #7f8c8d;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .recipe-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background-color: #d35400;
+                padding: 10px 0;
+                box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 10px 20px;
+            }
+            
+            .menu-icon {
+                display: block;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .recipe-container {
+                grid-template-columns: 1fr;
+            }
+            header {
+                padding: 15px 0;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay">
+        <nav>
+            <div class="nav-container">
+                <div class="logo">Gourmet Recipes</div>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+                <div class="menu-icon" onclick="toggleMenu()">☰</div>
+            </div>
+        </nav>
+        <header>
+            <h1>Gourmet Recipe Collection</h1>
+            <p class="subtitle">Discover delicious recipes from around the world</p><br>
+            
+            <!-- Search bar -->
+            <div class="search-container">
+                <input type="text" placeholder="Search for recipes..." class="search-input">
+                <button class="search-btn">Search</button>
+            </div><br>
+            
+            <!-- Featured section -->
+            <div class="featured-section">
+                <h3>Featured This Week</h3><br>
+                <div class="featured-tags">
+                    <span class="feature-tag">Seasonal Favorites</span><br>
+                    <span class="feature-tag">Quick Meals</span><br>
+                    <span class="feature-tag">Healthy Options</span><br>
+                </div>
+            </div>
+            
+            <!-- Welcome message -->
+            <div class="welcome-message">
+                <p>Welcome to our curated collection of gourmet recipes!.</p>
+            </div>
+            
+            <!-- Social Share -->
+            <div class="social-header">
+                <p>Follow Us:</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">📘</a>
+                    <a href="#" class="social-icon">📸</a>
+
+                </div>
+            </div>
+        </header>
+        
+       
+
+        <div class="recipe-container">
+            <!-- Recipe 1 -->
+            <div class="recipe-card">
+                <img src="C:\Users\Bharathi\Downloads\miniproject\quino salad.jpg" alt="Mediterranean Quinoa Salad" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Salad</span>
+                    <h2 class="recipe-title">Mediterranean Quinoa Salad</h2>
+                    <p class="recipe-description">A refreshing salad packed with protein and fresh vegetables, perfect for a light lunch or dinner.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 15 mins</span>
+                        <span>Serves: 4</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 2 -->
+            <div class="recipe-card">
+                <img src="C:\Users\Bharathi\Downloads\miniproject\paasta.jpg" alt="Creamy Garlic Parmesan Pasta" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Main Course</span>
+                    <h2 class="recipe-title">Creamy Garlic Parmesan Pasta</h2>
+                    <p class="recipe-description">A rich and creamy pasta dish that comes together in just 20 minutes, perfect for busy weeknights.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 5 mins</span>
+                        <span>Serves: 4</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 3 -->
+            <div class="recipe-card">
+                <img src="C:\Users\Bharathi\Downloads\miniproject\Mpizza.jpg" alt="Classic Margherita Pizza" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Italian</span>
+                    <h2 class="recipe-title">Classic Margherita Pizza</h2>
+                    <p class="recipe-description">A traditional Italian pizza with fresh mozzarella, tomatoes, and basil on a crispy homemade crust.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 30 mins</span>
+                        <span>Serves: 4</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 4 -->
+            <div class="recipe-card">
+                <img src="C:\Users\Bharathi\Downloads\miniproject\avacado.jpg" alt="Avocado Toast with Poached Egg" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Breakfast</span>
+                    <h2 class="recipe-title">Avocado Toast with Poached Egg</h2>
+                    <p class="recipe-description">Creamy avocado on toasted sourdough bread topped with a perfectly poached egg and red pepper flakes.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 10 mins</span>
+                        <span>Serves: 2</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 5 -->
+            <div class="recipe-card">
+                <img src="/C:\Users\Bharathi\Downloads\miniproject\chococake.jpg" alt="Chocolate Lava Cake" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Dessert</span>
+                    <h2 class="recipe-title">Chocolate Lava Cake</h2>
+                    <p class="recipe-description">Decadent chocolate cake with a molten center, served warm with vanilla ice cream for a delightful dessert.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 20 mins</span>
+                        <span>Serves: 6</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 6 -->
+            <div class="recipe-card">
+                <img src="C:\Users\Bharathi\Downloads\miniproject\chicken tr.jpg" alt="Chicken Teriyaki Stir-Fry" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Asian</span>
+                    <h2 class="recipe-title">Chicken Teriyaki Stir-Fry</h2>
+                    <p class="recipe-description">Tender chicken pieces and colorful vegetables in a sweet and savory teriyaki sauce over steamed rice.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 15 mins</span>
+                        <span>Serves: 4</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 7 -->
+            <div class="recipe-card">
+                <img src="C:\Users\Bharathi\Downloads\miniproject\band b.jpg" alt="Beef and Bean Burritos" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Mexican</span>
+                    <h2 class="recipe-title">Beef and Bean Burritos</h2>
+                    <p class="recipe-description">Hearty burritos filled with seasoned beef, refried beans, cheese, and fresh salsa wrapped in a warm tortilla.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 25 mins</span>
+                        <span>Serves: 6</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 8 -->
+            <div class="recipe-card">
+                <img src="C:\Users\Bharathi\Downloads\miniproject\roasted lasanga.jpg" alt="Roasted Vegetable Lasagna" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Vegetarian</span>
+                    <h2 class="recipe-title">Roasted Vegetable Lasagna</h2>
+                    <p class="recipe-description">Layers of roasted vegetables, creamy ricotta, and tangy tomato sauce between pasta sheets for a comforting dinner.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 45 mins</span>
+                        <span>Serves: 8</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 9 -->
+            <div class="recipe-card">
+                <img src="C:\Users\Bharathi\Downloads\miniproject\lemon pasta.jpg" alt="Lemon Garlic Shrimp Pasta" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Seafood</span>
+                    <h2 class="recipe-title">Lemon Garlic Shrimp Pasta</h2>
+                    <p class="recipe-description">Succulent shrimp sautéed with garlic and tossed with pasta in a light lemon butter sauce with fresh herbs.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 20 mins</span>
+                        <span>Serves: 4</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 10 -->
+            <div class="recipe-card">
+                <img src="C:\Users\Bharathi\Downloads\miniproject\soup.jpg" alt="Creamy Butternut Squash Soup" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Soup</span>
+                    <h2 class="recipe-title">Creamy Butternut Squash Soup</h2>
+                    <p class="recipe-description">A velvety smooth soup made from roasted butternut squash, perfect for cold weather comfort food.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 40 mins</span>
+                        <span>Serves: 6</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 11 -->
+            <div class="recipe-card">
+                <img src="C:\Users\Bharathi\Downloads\miniproject\butter chicken.jpg" alt="Butter Chicken" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Indian</span>
+                    <h2 class="recipe-title">Butter Chicken</h2>
+                    <p class="recipe-description">Tender chicken in a rich, creamy tomato sauce with aromatic spices, served with naan bread or rice.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 35 mins</span>
+                        <span>Serves: 6</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 12 -->
+            <div class="recipe-card">
+                <img src="/C:\Users\Bharathi\Downloads\miniproject\greek salad.jpg" alt="Classic Greek Salad" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Greek</span>
+                    <h2 class="recipe-title">Classic Greek Salad</h2>
+                    <p class="recipe-description">A refreshing mix of crisp cucumbers, juicy tomatoes, red onions, olives, and feta cheese with oregano dressing.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 15 mins</span>
+                        <span>Serves: 4</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 13 -->
+            <div class="recipe-card">
+                <img src="C:\Users\Bharathi\Downloads\miniproject\pancake'.jpg" alt="Fluffy Blueberry Pancakes" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Breakfast</span>
+                    <h2 class="recipe-title">Fluffy Blueberry Pancakes</h2>
+                    <p class="recipe-description">Light and fluffy pancakes studded with fresh blueberries and served with maple syrup for a perfect breakfast.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 15 mins</span>
+                        <span>Serves: 4</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 14 -->
+            <div class="recipe-card">
+                <img src="/C:\Users\Bharathi\Downloads\miniproject\beef bourigan.jpg" alt="Beef Bourguignon" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">French</span>
+                    <h2 class="recipe-title">Beef Bourguignon</h2>
+                    <p class="recipe-description">A classic French stew with tender beef, mushrooms, carrots, and red wine sauce, slow-cooked to perfection.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 3 hours</span>
+                        <span>Serves: 6</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+
+            <!-- Recipe 15 -->
+            <div class="recipe-card">
+                <img src="C:\Users\Bharathi\Downloads\miniproject\traimisu.jpg" alt="Classic Tiramisu" class="recipe-image">
+                <div class="recipe-content">
+                    <span class="recipe-category">Dessert</span>
+                    <h2 class="recipe-title">Classic Tiramisu</h2>
+                    <p class="recipe-description">An elegant Italian dessert made with layers of coffee-soaked ladyfingers and mascarpone cream dusted with cocoa.</p>
+                    <div class="recipe-meta">
+                        <span>Prep time: 30 mins</span>
+                        <span>Serves: 8</span>
+                    </div>
+                    <a href="#" class="btn">View Recipe</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-grid": background color:black;>
+                <div class="footer-section">
+                    <h3>About Gourmet Recipes</h3>
+                    <p>Curating the finest recipes since 2020. <br>
+                    Our mission is to inspire home cooks with accessible gourmet cuisine from around the world.</p>
+                </div>
+                <br>
+                <br>
+                
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="file:///C:/Users/Bharathi/OneDrive/Desktop/html(b)/popular%20recipes.html">Popular Recipes</a></li>
+                        <li><a href="file:///C:/Users/Bharathi/OneDrive/Desktop/html(b)/meal%20plan.html">Meal Plans</a></li>
+                        <li><a href="#">Cooking Tips</a></li>
+        
+                    </ul>
+                </div>
+                <br>
+                <br>
+                
+                <div class="footer-section">
+                    <h3>Recipe Categories</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Breakfast</a></li>
+                        <li><a href="#">Main Course</a></li>
+                        <li><a href="#">Desserts</a></li>
+                    
+                    </ul>
+                </div>
+                <br>
+                <br>
+                <div class="footer-section">
+                    <h3>Subscribe to Our Newsletter</h3>
+                    <p>Get weekly recipes and cooking tips!</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="Your email address" class="newsletter-input">
+                        <button class="newsletter-btn">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <br>
+            
+            <div class="footer-divider"></div>
+            
+            <div class="footer-bottom">
+                <div class="social-container">
+                    <p>Connect With Us:</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon" aria-label="Facebook">📘</a>
+                        <a href="#" class="social-icon" aria-label="Instagram">📸</a>
+                        <a href="#" class="social-icon" aria-label="Twitter">📱</a>
+                        <a href="#" class="social-icon" aria-label="YouTube">📹</a>
+                    </div>
+                </div>
+                <br>
+                <br>
+                
+                <div class="contact-container">
+                    <p>Contact: <a href="mailto:hello@gourmetrecipes.com">hello@gourmetrecipes.com</a> | (555) 123-4567</p>
+                </div>
+                
+                <div class="copyright-container">
+                    <p>&copy; 2025 Gourmet Recipe Collection | All recipes curated with love</p>
+                </div>
+                <br>
+                
+                <div class="legal-container">
+                    <a href="#">Privacy Policy</a>
+                    <span class="separator">|</span>
+                    <a href="#">Terms of Use</a>
+                    <span class="separator">|</span>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    
+    <script>
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
